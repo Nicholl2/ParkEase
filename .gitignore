@@ -1,0 +1,22 @@
+# Hasil kompilasi
+bin/
+out/
+*.class
+
+# Basis data lokal dan berkas demo
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Berkas bukti/laporan yang dihasilkan saat mencoba aplikasi
+bukti/
+*.log
+
+# Berkas IDE dan sistem
+.DS_Store
+.idea/
+*.iml
+.metadata/
+.settings/org.eclipse.core.resources.prefs
