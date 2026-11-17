@@ -7,7 +7,7 @@ riwayat, dan CRUD master data).
 
 ## Kebutuhan
 
-- JDK 22 (proyek di-set ke JavaSE-22)
+- JDK 22 atau lebih baru (proyek di-set ke JavaSE-22, diuji di JDK 25)
 - Eclipse IDE (opsional, untuk pengembangan)
 - Driver `lib/sqlite-jdbc-3.47.1.0.jar` (sudah disertakan)
 
@@ -20,6 +20,9 @@ riwayat, dan CRUD master data).
 ./scripts/run-console.sh    # kompilasi + jalankan 95 pemeriksaan
 ./scripts/run-gui.sh        # kompilasi + jalankan aplikasi desktop
 ```
+
+Skrip memakai *shell* POSIX; di Windows jalankan lewat **Git Bash** (pemisah
+classpath `;` vs `:` sudah dideteksi otomatis oleh skrip).
 
 Aplikasi desktop terbuka pada layar login. Gunakan akun demo di bawah, lalu
 jelajahi menu pada sidebar atau menu bar. Basis data `data/parkir.db` dibuat
