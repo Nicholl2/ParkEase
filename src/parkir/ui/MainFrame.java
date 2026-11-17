@@ -432,7 +432,7 @@ public class MainFrame extends JFrame {
                 Aplikasi manajemen parkir berbasis Java Swing dan SQLite.
 
                 Tugas Besar Pemrograman Berorientasi Objek.
-                Akun demo: admin / admin123
+                Data tersimpan lokal pada data/parkir.db.
                 """;
         JOptionPane.showMessageDialog(this, pesan, "Tentang Eparking", JOptionPane.INFORMATION_MESSAGE);
     }

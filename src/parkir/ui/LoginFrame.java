@@ -178,7 +178,7 @@ public class LoginFrame extends JFrame {
 
         gbc.gridy = 7;
         gbc.insets = new Insets(0, 0, 0, 0);
-        form.add(petunjukAkun(), gbc);
+        form.add(petunjukBantuan(), gbc);
 
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -192,13 +192,13 @@ public class LoginFrame extends JFrame {
         return panel;
     }
 
-    private JPanel petunjukAkun() {
+    private JPanel petunjukBantuan() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(new Color(0xF2F7F5));
         panel.setBorder(new EmptyBorder(10, 12, 10, 12));
         panel.setAlignmentX(LEFT_ALIGNMENT);
 
-        JLabel info = new JLabel("<html><b>Akun demo</b><br>admin / admin123</html>");
+        JLabel info = new JLabel("<html><b>Butuh bantuan?</b><br>Hubungi petugas admin untuk reset password.</html>");
         info.setFont(Tema.FONT_BADAN);
         info.setForeground(Tema.MUTED);
         panel.add(info, BorderLayout.CENTER);
