@@ -55,7 +55,7 @@ public class ModeDemoPanel extends JPanel implements MuatUlang {
         kartu.add(Box.createVerticalStrut(4));
 
         JTextArea keterangan = Tema.catatan("Seluruh perhitungan durasi memakai sumber waktu ini, "
-                + "bukan jam sistem secara langsung.", 500);
+                + "bukan jam sistem secara langsung.", 400);
         kartu.add(keterangan);
         kartu.add(Box.createVerticalStrut(24));
 
@@ -83,7 +83,7 @@ public class ModeDemoPanel extends JPanel implements MuatUlang {
 
         JTextArea catatan = Tema.catatan("Contoh: catat kendaraan masuk pada waktu asli, majukan 9 jam, "
                 + "lalu proses keluar. Denda overstay akan muncul otomatis. Kembalikan offset ke 0 "
-                + "setelah demo selesai.", 500);
+                + "setelah demo selesai.", 400);
         kartu.add(catatan);
         kartu.add(Box.createVerticalGlue());
         return kartu;
