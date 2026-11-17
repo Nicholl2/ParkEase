@@ -1,9 +1,9 @@
 # Eparking — Aplikasi Manajemen Parkir
 
 Tugas besar PBO: aplikasi desktop manajemen parkir dengan **Java Swing** dan
-**SQLite**. Repositori ini dibangun bertahap; tahap yang sudah selesai adalah
-lapisan **model, DAO, dan service** beserta pengujian konsol. Lapisan GUI
-menyusul pada tahap berikutnya.
+**SQLite**. Repositori ini berisi lapisan **model, DAO, dan service** beserta
+pengujian konsol, serta **antarmuka desktop** (login, dashboard, transaksi,
+riwayat, dan CRUD master data).
 
 ## Kebutuhan
 
@@ -18,7 +18,12 @@ menyusul pada tahap berikutnya.
 ```bash
 ./scripts/compile.sh        # kompilasi ke folder out/
 ./scripts/run-console.sh    # kompilasi + jalankan 95 pemeriksaan
+./scripts/run-gui.sh        # kompilasi + jalankan aplikasi desktop
 ```
+
+Aplikasi desktop terbuka pada layar login. Gunakan akun demo di bawah, lalu
+jelajahi menu pada sidebar atau menu bar. Basis data `data/parkir.db` dibuat
+otomatis pada penjalanan pertama.
 
 ### Lewat Eclipse
 
@@ -26,7 +31,9 @@ menyusul pada tahap berikutnya.
    `Eparking`.
 2. Pastikan *JRE System Library* menunjuk ke **JavaSE-22** dan
    `lib/sqlite-jdbc-3.47.1.0.jar` ada di *Build Path*.
-3. Jalankan `src/parkir/app/MainUji.java` dengan **Run As > Java Application**.
+3. Jalankan `src/parkir/app/MainApp.java` dengan **Run As > Java Application**
+   untuk membuka aplikasi desktop, atau `src/parkir/app/MainUji.java` untuk
+   menjalankan 95 pemeriksaan konsol.
 
 ## Akun demo
 
@@ -41,7 +48,7 @@ per pengguna), bukan teks biasa.
 
 ```
 src/parkir/
-├── app/          MainUji — harness uji konsol (GUI menyusul)
+├── app/          MainApp (titik masuk GUI), MainUji (harness uji konsol)
 ├── dao/          Database, SlotDAO, PetugasDAO, PengaturanTarifDAO,
 │                 TiketDAO, PembayaranDAO, AuditLogDAO
 ├── exception/    ValidasiException, SlotPenuhException,
@@ -52,8 +59,23 @@ src/parkir/
 │                 PengaturanTarif, AuditLog, Pembayaran, enum status
 ├── service/      AuthService, ParkirService, SlotService,
 │                 PetugasService, TarifService, AuditService
+├── ui/           Tema, LoginFrame, MainFrame, dan panel tiap layar
 └── util/         Money, Jam, Hash, NomorTiket
 ```
+
+## Layar aplikasi
+
+| Layar | Isi |
+|---|---|
+| Login | Autentikasi petugas, pesan kesalahan yang informatif |
+| Dashboard | Kapasitas motor/mobil, tiket aktif, pendapatan hari ini |
+| Kendaraan Masuk | Pilih jenis, slot otomatis/manual, tampilkan nomor tiket |
+| Kendaraan Keluar | Cari tiket, rincian biaya, bayar, atau batalkan tiket |
+| Riwayat | Pencarian + filter status/jenis, detail, unduh bukti `.txt` |
+| Slot Parkir | CRUD tabel: tambah, ubah, hapus dengan konfirmasi |
+| Petugas | CRUD tabel + reset password |
+| Tarif & Denda | Tarif per jenis, batas jam (spinner), denda |
+| Mode Demo | Majukan jam aplikasi untuk memperagakan overstay |
 
 ## Ketentuan tugas yang sudah terpenuhi
 
@@ -69,7 +91,10 @@ src/parkir/
 | `List`/`Map` bergenerik | `List<Tiket>`, `Map<JenisKendaraan, int[]>` |
 | try-catch operasi DB/berkas | seluruh DAO, `ParkirService.unduhBukti` |
 | Exception buatan sendiri | 4 kelas di `exception/` |
-| CRUD lengkap 2 entitas | `SlotService` dan `PetugasService` (+ tabel nanti di GUI) |
+| CRUD lengkap 2 entitas | `SlotService` dan `PetugasService`, dengan tabel + formulir di GUI |
+| GUI: ≥ 3 layar, login + menu utama | `LoginFrame`, `MainFrame`, 8 halaman `CardLayout` |
+| Input beragam | teks, combo box, checkbox, spinner (tarif & mode demo) |
+| Konfirmasi sebelum hapus | dialog konfirmasi pada Slot, Petugas, pembayaran, logout |
 
 ## Aturan bisnis penting
 
