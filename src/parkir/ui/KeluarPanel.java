@@ -58,8 +58,13 @@ public class KeluarPanel extends JPanel implements MuatUlang {
         setOpaque(false);
         setLayout(new BorderLayout(18, 0));
 
+        Tema.gayaCek(cbHilang);
+        lblTotal.setForeground(Tema.SUKSES);
+        lblTotalBayar.setForeground(Tema.SUKSES);
+
         add(buatPanelKiri(), BorderLayout.CENTER);
         add(buatPanelBayar(), BorderLayout.EAST);
+        Tema.gayaCombo(cbMetode);
         pasangAksi();
         bersihkan();
     }
@@ -81,7 +86,7 @@ public class KeluarPanel extends JPanel implements MuatUlang {
         atas.setOpaque(false);
         atas.setLayout(new BoxLayout(atas, BoxLayout.Y_AXIS));
 
-        JLabel labelNomor = Tema.kecil("NOMOR TIKET");
+        JLabel labelNomor = Tema.labelKapital("Nomor tiket");
         labelNomor.setAlignmentX(LEFT_ALIGNMENT);
         atas.add(labelNomor);
         atas.add(Box.createVerticalStrut(5));
@@ -144,7 +149,9 @@ public class KeluarPanel extends JPanel implements MuatUlang {
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 0, 8, 18);
-        panel.add(Tema.teks(label), gbc);
+        JLabel kunci = Tema.teks(label);
+        kunci.setForeground(Tema.TEXT_SEKUNDER);
+        panel.add(kunci, gbc);
 
         gbc.gridx = 1;
         gbc.weightx = 1;
@@ -186,7 +193,7 @@ public class KeluarPanel extends JPanel implements MuatUlang {
         kartu.add(metode);
         kartu.add(Box.createVerticalStrut(18));
 
-        JLabel labelTotal = Tema.kecil("JUMLAH DIBAYAR");
+        JLabel labelTotal = Tema.labelKapital("Jumlah dibayar");
         labelTotal.setAlignmentX(LEFT_ALIGNMENT);
         kartu.add(labelTotal);
         lblTotalBayar.setAlignmentX(LEFT_ALIGNMENT);
@@ -198,7 +205,7 @@ public class KeluarPanel extends JPanel implements MuatUlang {
         kartu.add(btnBayar);
         kartu.add(Box.createVerticalStrut(22));
 
-        JLabel pemisah = Tema.kecil("TINDAKAN LAIN");
+        JLabel pemisah = Tema.labelKapital("Tindakan lain");
         pemisah.setAlignmentX(LEFT_ALIGNMENT);
         kartu.add(pemisah);
         kartu.add(Box.createVerticalStrut(8));

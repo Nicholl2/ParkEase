@@ -1,7 +1,6 @@
 package parkir.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -44,24 +43,27 @@ public class LoginFrame extends JFrame {
     public LoginFrame() {
         setTitle("Eparking — Masuk");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(880, 560));
-        setSize(980, 640);
+        setMinimumSize(new Dimension(900, 580));
+        setSize(1000, 660);
         setLocationRelativeTo(null);
+        setBackground(Tema.BG);
 
         txtUsername.setPreferredSize(new Dimension(320, 40));
         txtPassword.setPreferredSize(new Dimension(320, 40));
         btnMasuk.setPreferredSize(new Dimension(320, 42));
 
-        setLayout(new GridBagLayout());
+        setContentPane(Tema.latar(new GridBagLayout()));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridx = 0;
-        gbc.weightx = 0.45;
+        gbc.weightx = 0.54;
+        gbc.insets = new Insets(40, 56, 40, 20);
         add(buatPanelMerek(), gbc);
         gbc.gridx = 1;
-        gbc.weightx = 0.55;
+        gbc.weightx = 0.46;
+        gbc.insets = new Insets(40, 20, 40, 56);
         add(buatPanelFormulir(), gbc);
 
         pasangAksi();
@@ -73,52 +75,81 @@ public class LoginFrame extends JFrame {
 
     private JPanel buatPanelMerek() {
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(Tema.SIDEBAR);
+        panel.setOpaque(false);
 
         JPanel isi = new JPanel();
         isi.setOpaque(false);
         isi.setLayout(new BoxLayout(isi, BoxLayout.Y_AXIS));
+        isi.setAlignmentX(LEFT_ALIGNMENT);
+
+        JPanel merek = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 0));
+        merek.setOpaque(false);
+        merek.setAlignmentX(LEFT_ALIGNMENT);
+        merek.add(new Tema.IkonMerek(52));
 
         JLabel nama = new JLabel("Eparking");
-        nama.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 34));
-        nama.setForeground(Color.WHITE);
-        nama.setAlignmentX(LEFT_ALIGNMENT);
+        nama.setFont(Tema.FONT_JUDUL.deriveFont(34f));
+        nama.setForeground(Tema.TEXT);
+        nama.setBorder(new EmptyBorder(0, 14, 0, 0));
+        nama.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        merek.add(nama);
+
+        isi.add(merek);
+        isi.add(Box.createVerticalStrut(10));
 
         JLabel tagline = new JLabel("Manajemen parkir yang rapi dan cepat");
-        tagline.setFont(Tema.FONT_BADAN);
-        tagline.setForeground(new Color(0xB9D2CB));
+        tagline.setFont(Tema.FONT_BADAN.deriveFont(14f));
+        tagline.setForeground(Tema.TEXT_SEKUNDER);
         tagline.setAlignmentX(LEFT_ALIGNMENT);
-
-        isi.add(nama);
-        isi.add(Box.createVerticalStrut(6));
         isi.add(tagline);
-        isi.add(Box.createVerticalStrut(36));
+
+        isi.add(Box.createVerticalStrut(34));
         isi.add(poin("Tiket dan tarif dihitung otomatis"));
         isi.add(poin("Riwayat transaksi lengkap"));
         isi.add(poin("Denda overstay dan tiket hilang"));
         isi.add(poin("Data tersimpan di SQLite"));
 
+        isi.add(Box.createVerticalStrut(30));
+
+        JPanel catatan = Tema.panelLembut();
+        catatan.setLayout(new BorderLayout(0, 4));
+        catatan.setAlignmentX(LEFT_ALIGNMENT);
+        catatan.setMaximumSize(new Dimension(360, 92));
+
+        JLabel labelKecil = Tema.labelKapital("Area petugas");
+        javax.swing.JTextArea isiKecil = Tema.catatan("Gunakan akun yang diberikan admin "
+                + "untuk mencatat transaksi parkir.", 300);
+        isiKecil.setFont(Tema.FONT_KECIL);
+        isiKecil.setForeground(Tema.TEXT_SEKUNDER);
+        catatan.add(labelKecil, BorderLayout.NORTH);
+        catatan.add(isiKecil, BorderLayout.CENTER);
+        isi.add(catatan);
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1;
-        gbc.insets = new Insets(0, 52, 0, 40);
+        gbc.insets = new Insets(0, 0, 0, 0);
         panel.add(isi, gbc);
         return panel;
     }
 
     private JLabel poin(String teks) {
-        JLabel label = new JLabel("•  " + teks);
+        JLabel label = new JLabel("<html><span style='color:#1856FF'>\u25CF</span>&nbsp;&nbsp;"
+                + teks + "</html>");
         label.setFont(Tema.FONT_BADAN);
-        label.setForeground(new Color(0xD7E5E0));
+        label.setForeground(Tema.TEXT_SEKUNDER);
         label.setAlignmentX(LEFT_ALIGNMENT);
-        label.setBorder(new EmptyBorder(0, 0, 10, 0));
+        label.setBorder(new EmptyBorder(0, 2, 10, 0));
         return label;
     }
 
     private JPanel buatPanelFormulir() {
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(Tema.SURFACE);
+        panel.setOpaque(false);
+
+        JPanel kartu = Tema.kartuBesar();
+        kartu.setLayout(new GridBagLayout());
 
         JPanel form = new JPanel(new GridBagLayout());
         form.setOpaque(false);
@@ -129,7 +160,7 @@ public class LoginFrame extends JFrame {
         judul.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         JLabel keterangan = new JLabel("Gunakan akun yang terdaftar untuk mengelola parkir.");
-        keterangan.setFont(Tema.FONT_BADAN);
+        keterangan.setFont(Tema.FONT_KECIL);
         keterangan.setForeground(Tema.MUTED);
 
         lblPesan.setFont(Tema.FONT_BADAN);
@@ -137,9 +168,8 @@ public class LoginFrame extends JFrame {
         lblPesan.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         JCheckBox lihat = new JCheckBox("Tampilkan password");
-        lihat.setOpaque(false);
+        Tema.gayaCek(lihat);
         lihat.setFont(Tema.FONT_KECIL);
-        lihat.setForeground(Tema.MUTED);
         lihat.addActionListener(e -> txtPassword.setEchoChar(lihat.isSelected() ? (char) 0 : '\u2022'));
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -187,20 +217,29 @@ public class LoginFrame extends JFrame {
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(0, 56, 0, 56);
-        panel.add(form, gbc);
+        kartu.add(form, gbc);
+
+        GridBagConstraints letak = new GridBagConstraints();
+        letak.gridx = 0;
+        letak.gridy = 0;
+        letak.weightx = 1;
+        letak.weighty = 1;
+        letak.fill = GridBagConstraints.NONE;
+        letak.anchor = GridBagConstraints.CENTER;
+        panel.add(kartu, letak);
         return panel;
     }
 
     private JPanel petunjukBantuan() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(new Color(0xF2F7F5));
-        panel.setBorder(new EmptyBorder(10, 12, 10, 12));
+        JPanel panel = Tema.panelLembut();
+        panel.setLayout(new BorderLayout(0, 3));
         panel.setAlignmentX(LEFT_ALIGNMENT);
 
-        JLabel info = new JLabel("<html><b>Butuh bantuan?</b><br>Hubungi petugas admin untuk reset password.</html>");
-        info.setFont(Tema.FONT_BADAN);
+        JLabel judul = Tema.labelKapital("Butuh bantuan?");
+        javax.swing.JTextArea info = Tema.catatan("Hubungi petugas admin untuk reset password.", 300);
+        info.setFont(Tema.FONT_KECIL);
         info.setForeground(Tema.MUTED);
+        panel.add(judul, BorderLayout.NORTH);
         panel.add(info, BorderLayout.CENTER);
         return panel;
     }

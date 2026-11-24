@@ -38,6 +38,9 @@ public class ModeDemoPanel extends JPanel implements MuatUlang {
         setOpaque(false);
         setLayout(new BorderLayout(18, 0));
 
+        Tema.gayaSpinner(spOffset);
+        lblSekarang.setForeground(Tema.CYAN);
+
         add(buatPanelUtama(), BorderLayout.CENTER);
         add(buatPanelPanduan(), BorderLayout.EAST);
         pasangAksi();

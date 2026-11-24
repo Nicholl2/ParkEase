@@ -48,8 +48,12 @@ public class MasukPanel extends JPanel implements MuatUlang {
         setOpaque(false);
         setLayout(new BorderLayout(18, 0));
 
+        Tema.gayaCek(cbOtomatis);
+
         add(buatFormulir(), BorderLayout.CENTER);
         add(buatPanelTarif(), BorderLayout.EAST);
+        Tema.gayaCombo(cbJenis);
+        Tema.gayaCombo(cbSlot);
         pasangAksi();
     }
 

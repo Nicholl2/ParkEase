@@ -52,6 +52,8 @@ public class SlotPanel extends JPanel implements MuatUlang {
         setOpaque(false);
         setLayout(new BorderLayout(18, 0));
 
+        Tema.gayaCombo(cbJenis);
+
         add(buatPanelTabel(), BorderLayout.CENTER);
         add(buatFormulir(), BorderLayout.EAST);
         pasangAksi();

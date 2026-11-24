@@ -62,6 +62,9 @@ public class RiwayatPanel extends JPanel implements MuatUlang {
         cbStatus.setPreferredSize(new Dimension(150, 34));
         cbJenis.setPreferredSize(new Dimension(150, 34));
 
+        Tema.gayaCombo(cbStatus);
+        Tema.gayaCombo(cbJenis);
+
         add(buatFilter(), BorderLayout.NORTH);
         add(buatTabel(), BorderLayout.CENTER);
 
@@ -76,7 +79,9 @@ public class RiwayatPanel extends JPanel implements MuatUlang {
 
         JPanel kiri = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 8, 0));
         kiri.setOpaque(false);
-        kiri.add(Tema.teks("Cari"));
+        JLabel labelCari = Tema.teks("Cari");
+        labelCari.setForeground(Tema.TEXT_SEKUNDER);
+        kiri.add(labelCari);
         kiri.add(txtCari);
         kiri.add(cbStatus);
         kiri.add(cbJenis);
@@ -91,16 +96,39 @@ public class RiwayatPanel extends JPanel implements MuatUlang {
         JPanel kartu = Tema.kartu();
         kartu.setLayout(new BorderLayout(0, 10));
 
-        int[] lebar = { 150, 70, 70, 130, 130, 65, 110, 100, 130 };
+        int[] lebar = { 160, 70, 70, 140, 140, 65, 100, 100, 120 };
         for (int i = 0; i < lebar.length; i++) {
             tabel.getColumnModel().getColumn(i).setPreferredWidth(lebar[i]);
         }
         tabel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tabel.getColumnModel().getColumn(7).setCellRenderer(new StatusRenderer());
 
         JScrollPane scroll = Tema.gulir(tabel);
         kartu.add(scroll, BorderLayout.CENTER);
         kartu.add(lblInfo, BorderLayout.SOUTH);
         return kartu;
+    }
+
+    /** Pewarnaan teks status agar mudah dipindai. */
+    private static final class StatusRenderer extends Tema.RenderBaris {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public java.awt.Component getTableCellRendererComponent(JTable tabel, Object nilai, boolean terpilih,
+                boolean fokus, int baris, int kolom) {
+            java.awt.Component komponen = super.getTableCellRendererComponent(tabel, nilai, terpilih, fokus,
+                    baris, kolom);
+            String teks = nilai == null ? "" : nilai.toString();
+            if ("Selesai".equals(teks)) {
+                komponen.setForeground(Tema.SUKSES);
+            } else if ("Aktif".equals(teks)) {
+                komponen.setForeground(Tema.CYAN);
+            } else if ("Dibatalkan".equals(teks)) {
+                komponen.setForeground(Tema.PERINGATAN);
+            }
+            return komponen;
+        }
     }
 
     // ---------------------------------------------------------------- aksi
@@ -204,6 +232,7 @@ public class RiwayatPanel extends JPanel implements MuatUlang {
         Tiket tiket = data.get(baris);
 
         JFileChooser chooser = new JFileChooser();
+        Tema.gayaPemilihBerkas(chooser);
         chooser.setDialogTitle("Simpan bukti transaksi");
         chooser.setSelectedFile(new File("bukti-" + tiket.getNomorTiket() + ".txt"));
         if (chooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {

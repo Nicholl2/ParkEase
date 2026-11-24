@@ -37,8 +37,12 @@ public class DashboardPanel extends JPanel implements MuatUlang {
         setOpaque(false);
         setLayout(new BorderLayout(0, 16));
 
-        JPanel statistik = new JPanel(new GridLayout(1, 4, 14, 0));
+        JPanel statistik = new JPanel(new GridLayout(1, 4, 16, 0));
         statistik.setOpaque(false);
+        nilaiMotor.setForeground(Tema.CYAN);
+        nilaiMobil.setForeground(Tema.PRIMARY_HOVER);
+        nilaiAktif.setForeground(Tema.UNGU);
+        nilaiPendapatan.setForeground(Tema.SUKSES);
         statistik.add(Tema.kartuStatistik("Motor terisi", nilaiMotor, "dari total slot motor"));
         statistik.add(Tema.kartuStatistik("Mobil terisi", nilaiMobil, "dari total slot mobil"));
         statistik.add(Tema.kartuStatistik("Tiket aktif", nilaiAktif, "kendaraan di dalam area"));
@@ -46,7 +50,7 @@ public class DashboardPanel extends JPanel implements MuatUlang {
         add(statistik, BorderLayout.NORTH);
 
         JPanel bawah = Tema.kartu();
-        bawah.setLayout(new BorderLayout(0, 12));
+        bawah.setLayout(new BorderLayout(0, 14));
 
         JPanel kepala = new JPanel(new BorderLayout());
         kepala.setOpaque(false);
