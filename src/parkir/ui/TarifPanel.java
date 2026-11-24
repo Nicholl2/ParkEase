@@ -45,6 +45,9 @@ public class TarifPanel extends JPanel implements MuatUlang {
         setOpaque(false);
         setLayout(new BorderLayout(0, 14));
 
+        Tema.gayaCombo(cbJenis);
+        Tema.gayaSpinner(spBatas);
+
         add(buatPemilih(), BorderLayout.NORTH);
         add(buatFormulir(), BorderLayout.CENTER);
         pasangAksi();

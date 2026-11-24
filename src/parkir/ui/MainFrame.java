@@ -3,16 +3,12 @@ package parkir.ui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -74,7 +70,7 @@ public class MainFrame extends JFrame {
     private final JPanel isi = new JPanel(kartu);
     private final Map<String, JComponent> halaman = new LinkedHashMap<>();
     private final Map<String, String> keterangan = new LinkedHashMap<>();
-    private final Map<String, JButton> navTombol = new LinkedHashMap<>();
+    private final Map<String, Tema.TombolNav> navTombol = new LinkedHashMap<>();
     private String kunciAktif = DASHBOARD;
 
     private final JLabel lblJudul = new JLabel();
@@ -90,16 +86,20 @@ public class MainFrame extends JFrame {
         setMinimumSize(new Dimension(1080, 680));
         setSize(1280, 820);
         setLocationRelativeTo(null);
+        setBackground(Tema.BG);
 
+        isi.setOpaque(false);
         isi.setBackground(Tema.BG);
 
         daftarkanHalaman();
         setJMenuBar(buatMenu());
 
-        add(buatSidebar(), BorderLayout.WEST);
-        add(buatKepala(), BorderLayout.NORTH);
-        add(isi, BorderLayout.CENTER);
-        add(buatStatusBar(), BorderLayout.SOUTH);
+        JPanel akar = Tema.latar();
+        akar.add(buatSidebar(), BorderLayout.WEST);
+        akar.add(buatKepala(), BorderLayout.NORTH);
+        akar.add(isi, BorderLayout.CENTER);
+        akar.add(buatStatusBar(), BorderLayout.SOUTH);
+        setContentPane(akar);
 
         timerJam = new Timer(30_000, e -> perbaruiJam());
         timerJam.start();
@@ -152,8 +152,8 @@ public class MainFrame extends JFrame {
         keterangan.put(kunci, subjudul);
 
         JPanel bungkus = new JPanel(new BorderLayout());
-        bungkus.setBackground(Tema.BG);
-        bungkus.setBorder(new EmptyBorder(18, 22, 18, 22));
+        bungkus.setOpaque(false);
+        bungkus.setBorder(new EmptyBorder(20, 24, 20, 24));
         bungkus.add(panel, BorderLayout.CENTER);
         isi.add(bungkus, kunci);
     }
@@ -168,11 +168,8 @@ public class MainFrame extends JFrame {
         lblJudul.setText(kunci);
         lblKeterangan.setText(keterangan.get(kunci));
 
-        for (Map.Entry<String, JButton> entri : navTombol.entrySet()) {
-            boolean aktif = entri.getKey().equals(kunci);
-            JButton tombol = entri.getValue();
-            tombol.setBackground(aktif ? Tema.PRIMARY : Tema.SIDEBAR);
-            tombol.setFont(aktif ? Tema.FONT_TEBAL : Tema.FONT_NAV);
+        for (Map.Entry<String, Tema.TombolNav> entri : navTombol.entrySet()) {
+            entri.getValue().setAktif(entri.getKey().equals(kunci));
         }
 
         JComponent panel = halaman.get(kunci);
@@ -185,23 +182,15 @@ public class MainFrame extends JFrame {
 
     private JPanel buatSidebar() {
         JPanel sidebar = new JPanel();
-        sidebar.setBackground(Tema.SIDEBAR);
+        sidebar.setBackground(Tema.BG_GELAP);
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
-        sidebar.setPreferredSize(new Dimension(232, 0));
-        sidebar.setBorder(new EmptyBorder(22, 14, 18, 14));
+        sidebar.setPreferredSize(new Dimension(248, 0));
+        sidebar.setBorder(BorderFactory.createCompoundBorder(
+                new MatteBorder(0, 0, 0, 1, Tema.BORDER),
+                new EmptyBorder(24, 16, 20, 16)));
 
-        JLabel merek = new JLabel("Eparking");
-        merek.setFont(new Font("SansSerif", Font.BOLD, 24));
-        merek.setForeground(Color.WHITE);
-        merek.setAlignmentX(LEFT_ALIGNMENT);
-        sidebar.add(merek);
-
-        JLabel sub = new JLabel("Manajemen Parkir");
-        sub.setFont(Tema.FONT_KECIL);
-        sub.setForeground(new Color(0x8FB3A9));
-        sub.setAlignmentX(LEFT_ALIGNMENT);
-        sidebar.add(sub);
-        sidebar.add(Box.createVerticalStrut(22));
+        sidebar.add(buatMerek());
+        sidebar.add(Box.createVerticalStrut(26));
 
         sidebar.add(labelGrup("TRANSAKSI"));
         sidebar.add(tombolNav(DASHBOARD, "Dashboard"));
@@ -220,53 +209,54 @@ public class MainFrame extends JFrame {
         sidebar.add(Box.createVerticalGlue());
 
         JLabel versi = new JLabel("v1.0 · Tugas Besar PBO");
-        versi.setFont(Tema.FONT_KECIL);
-        versi.setForeground(new Color(0x6E9389));
+        versi.setFont(Tema.FONT_LABEL_KECIL);
+        versi.setForeground(new Color(0x6E, 0x7D, 0x99));
         versi.setAlignmentX(LEFT_ALIGNMENT);
         sidebar.add(versi);
 
         return sidebar;
     }
 
+    private JPanel buatMerek() {
+        JPanel merek = new JPanel(new BorderLayout(12, 0));
+        merek.setOpaque(false);
+        merek.setAlignmentX(LEFT_ALIGNMENT);
+        merek.setMaximumSize(new Dimension(Integer.MAX_VALUE, 44));
+
+        merek.add(new Tema.IkonMerek(42), BorderLayout.WEST);
+
+        JPanel teks = new JPanel();
+        teks.setOpaque(false);
+        teks.setLayout(new BoxLayout(teks, BoxLayout.Y_AXIS));
+
+        JLabel nama = new JLabel("Eparking");
+        nama.setFont(Tema.FONT_JUDUL.deriveFont(19f));
+        nama.setForeground(Tema.TEXT);
+        nama.setAlignmentX(LEFT_ALIGNMENT);
+
+        JLabel sub = new JLabel("Manajemen Parkir");
+        sub.setFont(Tema.FONT_KECIL);
+        sub.setForeground(Tema.TEXT_SEKUNDER);
+        sub.setAlignmentX(LEFT_ALIGNMENT);
+
+        teks.add(nama);
+        teks.add(sub);
+        merek.add(teks, BorderLayout.CENTER);
+        return merek;
+    }
+
     private JLabel labelGrup(String teks) {
-        JLabel label = new JLabel(teks);
-        label.setFont(Tema.FONT_KECIL.deriveFont(Font.BOLD));
-        label.setForeground(new Color(0x6E9389));
+        JLabel label = new JLabel(Tema.renggang(teks));
+        label.setFont(Tema.FONT_LABEL_KECIL);
+        label.setForeground(new Color(0x78, 0x88, 0xA8));
         label.setAlignmentX(LEFT_ALIGNMENT);
-        label.setBorder(new EmptyBorder(14, 10, 6, 0));
+        label.setBorder(new EmptyBorder(16, 14, 7, 0));
         return label;
     }
 
     private JButton tombolNav(String kunci, String teks) {
-        JButton tombol = new JButton(teks);
-        tombol.setUI(new javax.swing.plaf.basic.BasicButtonUI());
-        tombol.setFont(Tema.FONT_NAV);
-        tombol.setForeground(new Color(0xD7E5E0));
-        tombol.setBackground(Tema.SIDEBAR);
-        tombol.setBorderPainted(false);
-        tombol.setFocusPainted(false);
-        tombol.setOpaque(true);
-        tombol.setHorizontalAlignment(SwingConstants.LEFT);
-        tombol.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        tombol.setBorder(new EmptyBorder(9, 12, 9, 12));
-        tombol.setMaximumSize(new Dimension(Integer.MAX_VALUE, 38));
-        tombol.setAlignmentX(LEFT_ALIGNMENT);
+        Tema.TombolNav tombol = new Tema.TombolNav(teks);
         tombol.addActionListener(e -> tampilkan(kunci));
-        tombol.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if (!kunci.equals(kunciAktif)) {
-                    tombol.setBackground(Tema.SIDEBAR_HOVER);
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                if (!kunci.equals(kunciAktif)) {
-                    tombol.setBackground(Tema.SIDEBAR);
-                }
-            }
-        });
         navTombol.put(kunci, tombol);
         return tombol;
     }
@@ -275,10 +265,10 @@ public class MainFrame extends JFrame {
 
     private JPanel buatKepala() {
         JPanel kepala = new JPanel(new BorderLayout(12, 0));
-        kepala.setBackground(Tema.SURFACE);
+        kepala.setOpaque(false);
         kepala.setBorder(BorderFactory.createCompoundBorder(
                 new MatteBorder(0, 0, 1, 0, Tema.BORDER),
-                new EmptyBorder(14, 24, 14, 24)));
+                new EmptyBorder(16, 26, 16, 26)));
 
         JPanel kiri = new JPanel();
         kiri.setOpaque(false);
@@ -292,7 +282,7 @@ public class MainFrame extends JFrame {
         lblKeterangan.setAlignmentX(LEFT_ALIGNMENT);
 
         kiri.add(lblJudul);
-        kiri.add(Box.createVerticalStrut(2));
+        kiri.add(Box.createVerticalStrut(3));
         kiri.add(lblKeterangan);
         kepala.add(kiri, BorderLayout.WEST);
 
@@ -300,13 +290,16 @@ public class MainFrame extends JFrame {
         kanan.setOpaque(false);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;
-        gbc.insets = new Insets(0, 0, 0, 14);
+        gbc.insets = new Insets(0, 0, 0, 12);
+
+        gbc.gridx = 0;
+        kanan.add(Tema.avatar(petugas.getNama(), 38), gbc);
 
         JPanel info = new JPanel();
         info.setOpaque(false);
         info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
         JLabel kecil = new JLabel("Masuk sebagai");
-        kecil.setFont(Tema.FONT_KECIL);
+        kecil.setFont(Tema.FONT_LABEL_KECIL);
         kecil.setForeground(Tema.MUTED);
         kecil.setAlignmentX(LEFT_ALIGNMENT);
         JLabel nama = new JLabel(petugas.getNama());
@@ -315,12 +308,13 @@ public class MainFrame extends JFrame {
         nama.setAlignmentX(LEFT_ALIGNMENT);
         info.add(kecil);
         info.add(nama);
-        gbc.gridx = 0;
+        gbc.gridx = 1;
+        gbc.insets = new Insets(0, 0, 0, 16);
         kanan.add(info, gbc);
 
         JButton logout = Tema.kedua("Logout");
         logout.addActionListener(e -> logout());
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.insets = new Insets(0, 0, 0, 0);
         kanan.add(logout, gbc);
 
@@ -332,8 +326,13 @@ public class MainFrame extends JFrame {
 
     private JMenuBar buatMenu() {
         JMenuBar bar = new JMenuBar();
+        bar.setUI(new javax.swing.plaf.basic.BasicMenuBarUI());
+        bar.setBackground(Tema.BG_GELAP);
+        bar.setBorder(BorderFactory.createCompoundBorder(
+                new MatteBorder(0, 0, 1, 0, Tema.BORDER),
+                new EmptyBorder(5, 10, 5, 10)));
 
-        JMenu berkas = new JMenu("Berkas");
+        JMenu berkas = menu("Berkas");
         JMenuItem dashboard = menuItem("Dashboard", KeyEvent.VK_D, e -> tampilkan(DASHBOARD));
         JMenuItem logout = menuItem("Logout", KeyEvent.VK_L, e -> logout());
         JMenuItem keluar = menuItem("Keluar Aplikasi", KeyEvent.VK_Q, e -> tutupAplikasi());
@@ -342,17 +341,17 @@ public class MainFrame extends JFrame {
         berkas.add(logout);
         berkas.add(keluar);
 
-        JMenu transaksi = new JMenu("Transaksi");
+        JMenu transaksi = menu("Transaksi");
         transaksi.add(menuItem("Kendaraan Masuk", KeyEvent.VK_1, e -> tampilkan(MASUK)));
         transaksi.add(menuItem("Kendaraan Keluar", KeyEvent.VK_2, e -> tampilkan(KELUAR)));
         transaksi.add(menuItem("Riwayat Transaksi", KeyEvent.VK_3, e -> tampilkan(RIWAYAT)));
 
-        JMenu master = new JMenu("Master Data");
+        JMenu master = menu("Master Data");
         master.add(menuItem("Slot Parkir", 0, e -> tampilkan(SLOT)));
         master.add(menuItem("Petugas", 0, e -> tampilkan(PETUGAS)));
         master.add(menuItem("Tarif & Denda", 0, e -> tampilkan(TARIF)));
 
-        JMenu alat = new JMenu("Alat");
+        JMenu alat = menu("Alat");
         alat.add(menuItem("Mode Demo", 0, e -> tampilkan(DEMO)));
         alat.addSeparator();
         alat.add(menuItem("Tentang Aplikasi", 0, e -> tentang()));
@@ -364,9 +363,22 @@ public class MainFrame extends JFrame {
         return bar;
     }
 
+    private JMenu menu(String teks) {
+        JMenu menu = new JMenu(teks);
+        menu.setFont(Tema.FONT_BADAN);
+        menu.setForeground(Tema.TEXT_SEKUNDER);
+        menu.setOpaque(false);
+        menu.setBorder(new EmptyBorder(4, 10, 4, 10));
+        return menu;
+    }
+
     private JMenuItem menuItem(String teks, int tombolPintas, java.awt.event.ActionListener aksi) {
         JMenuItem item = new JMenuItem(teks);
         item.setFont(Tema.FONT_BADAN);
+        item.setForeground(Tema.TEXT);
+        item.setBackground(Tema.PANEL_GELAP);
+        item.setOpaque(true);
+        item.setBorder(new EmptyBorder(6, 12, 6, 12));
         if (tombolPintas != 0) {
             item.setAccelerator(KeyStroke.getKeyStroke(tombolPintas, InputEvent.CTRL_DOWN_MASK));
         }
@@ -378,10 +390,10 @@ public class MainFrame extends JFrame {
 
     private JPanel buatStatusBar() {
         JPanel bar = new JPanel(new BorderLayout());
-        bar.setBackground(Tema.SURFACE);
+        bar.setOpaque(false);
         bar.setBorder(BorderFactory.createCompoundBorder(
                 new MatteBorder(1, 0, 0, 0, Tema.BORDER),
-                new EmptyBorder(7, 22, 7, 22)));
+                new EmptyBorder(9, 26, 9, 26)));
 
         JLabel kiri = new JLabel("Eparking v1.0 · Basis data lokal SQLite · " + petugas.getUsername());
         kiri.setFont(Tema.FONT_KECIL);
