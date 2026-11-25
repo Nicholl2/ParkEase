@@ -220,11 +220,7 @@ public class MasukPanel extends JPanel implements MuatUlang {
 
     private void tampilkanTiket(Tiket tiket) {
         RincianBiaya rincian = tiket.hitungRincian();
-        JTextArea area = new JTextArea();
-        area.setEditable(false);
-        area.setOpaque(false);
-        area.setFont(Tema.FONT_MONO);
-        area.setText("Kendaraan berhasil dicatat.\n\n"
+        JTextArea area = Tema.areaDialog("Kendaraan berhasil dicatat.\n\n"
                 + "Nomor tiket : " + tiket.getNomorTiket() + "\n"
                 + "Slot        : " + tiket.getSlot().getNomor() + "\n"
                 + "Kendaraan   : " + tiket.getJenis().getLabel() + "\n"

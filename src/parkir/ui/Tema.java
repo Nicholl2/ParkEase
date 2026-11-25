@@ -298,6 +298,11 @@ public final class Tema {
         UIManager.put("TextField.selectionForeground", TEXT);
         UIManager.put("PasswordField.selectionBackground", PRIMARY);
         UIManager.put("PasswordField.selectionForeground", TEXT);
+        UIManager.put("TextArea.font", FONT_MONO);
+        UIManager.put("TextArea.foreground", TEXT);
+        UIManager.put("TextArea.caretForeground", TEXT);
+        UIManager.put("TextArea.selectionBackground", PRIMARY);
+        UIManager.put("TextArea.selectionForeground", TEXT);
         UIManager.put("Table.selectionBackground", SELEKSI);
         UIManager.put("Table.selectionForeground", TEXT);
         UIManager.put("Menu.selectionBackground", KARTU_2);
@@ -396,6 +401,26 @@ public final class Tema {
     /** Paragraf berukuran normal yang membungkus teks otomatis. */
     public static javax.swing.JTextArea paragraf(String teks, int lebar) {
         return areaBungkus(teks, lebar, FONT_BADAN, TEXT_SEKUNDER);
+    }
+
+    /**
+     * Badan teks untuk dialog (tiket, struk, detail transaksi).
+     *
+     * <p>Metal LAF memberi latar putih dan teks gelap bawaan pada
+     * {@code JTextArea}; tanpa warna eksplisit teksnya hilang di atas kartu
+     * navy pada {@code JOptionPane}. Area ini transparan dan memakai teks
+     * primer yang sama dengan komponen lain.</p>
+     */
+    public static javax.swing.JTextArea areaDialog(String teks) {
+        javax.swing.JTextArea area = new javax.swing.JTextArea(teks);
+        area.setEditable(false);
+        area.setFocusable(false);
+        area.setOpaque(false);
+        area.setFont(FONT_MONO);
+        area.setForeground(TEXT);
+        area.setBorder(null);
+        area.setMargin(new Insets(0, 0, 0, 0));
+        return area;
     }
 
     private static javax.swing.JTextArea areaBungkus(String teks, int lebar, Font font, Color warna) {
