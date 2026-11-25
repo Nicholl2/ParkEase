@@ -196,11 +196,7 @@ public class RiwayatPanel extends JPanel implements MuatUlang {
             return;
         }
         Tiket tiket = data.get(baris);
-        JTextArea area = new JTextArea();
-        area.setEditable(false);
-        area.setOpaque(false);
-        area.setFont(Tema.FONT_MONO);
-        area.setText("Nomor tiket   : " + tiket.getNomorTiket() + "\n"
+        JTextArea area = Tema.areaDialog("Nomor tiket   : " + tiket.getNomorTiket() + "\n"
                 + "Slot          : " + tiket.getSlot().getNomor() + "\n"
                 + "Kendaraan     : " + tiket.getJenis().getLabel() + "\n"
                 + "Masuk         : " + Tema.waktu(tiket.getWaktuMasuk()) + "\n"

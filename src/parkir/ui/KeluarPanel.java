@@ -314,11 +314,7 @@ public class KeluarPanel extends JPanel implements MuatUlang {
     }
 
     private void tampilkanStruk(Pembayaran bayar, RincianBiaya rincian, MetodePembayaran metode) {
-        JTextArea area = new JTextArea();
-        area.setEditable(false);
-        area.setOpaque(false);
-        area.setFont(Tema.FONT_MONO);
-        area.setText("Pembayaran berhasil.\n\n"
+        JTextArea area = Tema.areaDialog("Pembayaran berhasil.\n\n"
                 + "Nomor tiket : " + (aktif == null ? "-" : aktif.getNomorTiket()) + "\n"
                 + "Durasi      : " + rincian.getDurasiJam() + " jam\n"
                 + "Tarif dasar : " + Money.format(rincian.getTarifDasar()) + "\n"
